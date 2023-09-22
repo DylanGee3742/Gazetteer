@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gazetteer</title>
+
+  <link rel="icon" href="libs/pics/favicon-32x32.png" type="image/x-icon">
+
+  <link rel="stylesheet" href="leaflet/leaflet.css">
+
+  <link rel="stylesheet" href="libs/css/style.css">
+
+  <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="leaflet/dist/css/leaflet.extra-markers.min.css">
+
+  <link rel="stylesheet" href="libs/css/all.min.css">
+
+  <link rel="stylesheet" href="leaflet/Leaflet.markercluster-1.4.1/dist/MarkerCluster.css">
+
+  <link rel="stylesheet" href="leaflet/Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css">
+
+
+  <script type="application/javascript" src="jquery/jquery-3.6.4.min.js"></script>
+
+
+</head>
+
+<body>
+  <div class="container-fluid p-0">
+    <div class="row no-gutters">
+      <div class="col-12" class="vh-100">
+        <div id="map"></div>
+        <div class="central-loader"></div>
+      </div>
+
+      <!-- Popup Modal -->
+      <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm" id="errorPrompt" role="document">
+          <div class="modal-content modal-sm">
+            <div class="modal-header modal-sm">
+              <h5 class="modal-title modal-sm" id="modalTitle">Error!</h5>
+            </div>
+            <div class="modal-body modal-sm" id="errorMessage">
+              <p>Sorry we had a problem retrieving all the data on this country</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-md-4 py-3 px-2">
+        <div class="search form-inline mb-3">
+          <select id="country-select" class="form-select form-select-sm"></select>
+        </div>
+
+        <button id="general-info-btn" class="btn btn-circle" data-bs-toggle="modal"
+          data-bs-target="#generalModal"></button>
+        <button id="exchange-info-btn" class="btn btn-circle" data-bs-toggle="modal"
+          data-bs-target="#exchangeModal"></button>
+        <button id="air-info-btn" class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#airModal"></button>
+        <button id="covid-info-btn" class="btn btn-circle" data-bs-toggle="modal" data-bs-target="#covidModal"></button>
+        <button id="population-info-btn" class="btn btn-circle" data-bs-toggle="modal"
+          data-bs-target="#populationModal"></button>
+        <button id="weather-info-btn" class="btn btn-circle" data-bs-toggle="modal"
+          data-bs-target="#weatherModal"></button>
+
+        <div id="generalModal" class="modal fade" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="generalModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="2">
+                      <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="modal"
+                        aria-label="Close"> </button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <h4 class="modal-title mr-5" id="country">United Kingdom</h4>
+                        <img id="flag" class="img-fluid float" height="50px" width="55px" />
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-success">
+                    <th scope="row">Capital</th>
+                    <td id="capital" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Populution</th>
+                    <td id="population" class="text-end"></td>
+                  </tr>
+                  <tr class="table-success">
+                    <th scope="row">Currency</th>
+                    <td id="currency" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Continent</th>
+                    <td id="continent" class="text-end"></td>
+                  </tr>
+                  <tr class="table-success">
+                    <th scope="row">Language</th>
+                    <td id="language" class="text-end"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="weatherModal" class="modal fade" tabindex="-1" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="weatherModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+
+            <div class="modal-content shadow">
+
+              <div class="modal-header bg-success bg-gradient text-white">
+
+                <h5 class="modal-title" id="weatherModalLabel"></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+
+              </div>
+
+              <div class="modal-body">
+
+                <div id="pre-load"></div>
+
+                <div class="row">
+
+                  <div class="col border m-2">
+
+                    <p class="fw-bold fs-5 mt-3">TODAY</p>
+
+                    <div class="row">
+
+                      <div class="col text-center m-2">
+
+                        <p id="todayConditions" class="fw-bold fs-6"></p>
+
+                      </div>
+
+                      <div class="col text-center">
+
+                        <img id="todayIcon" class="img-fluid mt-0" src="" alt="" title="">
+
+                      </div>
+
+                      <div class="col text-center">
+
+                        <p class="fw-bold fs-4 mb-0"><span id="todayMaxTemp">3</span><sup>o</sup><span
+                            class="tempMetric">c</span></p>
+                        <p class="fs-5 mt-0 text-secondary"><span id="todayMinTemp">-2</span><sup>o</sup><span
+                            class="tempMetric">c</span></p>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+                <div class="row">
+
+                  <div class="col border m-2">
+
+                    <div class="row">
+
+                      <div class="col text-center">
+
+                        <p id="day1Date" class="fw-bold fs-6 mt-3"></p>
+
+                      </div>
+
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col text-center">
+
+                        <p class="fw-bold fs-4 mb-0"><span id="day1MaxTemp"></span><sup>o</sup>c
+                        </p>
+                        <p class="fs-5 mt-0 text-secondary"><span id="day1MinTemp"></span><sup>o</sup>c</p>
+
+                      </div>
+
+                      <div class="col text-center">
+
+                        <img id="day1Icon" src="" alt="" title="">
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  <div class="col border m-2">
+
+                    <div class="row">
+
+                      <div class="col text-center">
+
+                        <p id="day2Date" class="fw-bold fs-6 mt-3">Fri 16th</p>
+
+                      </div>
+
+                    </div>
+
+                    <div class="row">
+
+                      <div class="col text-center">
+
+                        <p class="fw-bold fs-4 mb-0"><span id="day2MaxTemp"></span><sup>o</sup>c
+                        </p>
+                        <p class="fs-5 mt-0 text-secondary"><span id="day2MinTemp"></span><sup>o</sup>c</p>
+
+                      </div>
+
+                      <div class="col text-center">
+
+                        <img id="day2Icon" src="" alt="" title="">
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <p class="fs-6 fw-light">Last updated <span id="lastUpdated"></span>. Powered by <a
+                    href="https://www.weatherapi.com/" target="_blank" title="Free Weather API">WeatherAPI.com</a></p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div id="exchangeModal" class="modal fade" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="exchangeModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="2">
+                      <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="modal" aria-label="Close"> </button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <h4 class="modal-title display-6" id="country">Currency Converter</h4>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th colspan="2" class="text-center">
+                      <p class="lead fs-6">Explore the exchange rate for this country using your preferred currency</p>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" class="text-center"><select id="from-currency" class="form-select-sm"></select>
+                      <input id="amount" class="form-control-sm" type="number" placeholder="Please enter an amount" />
+                      <button id="convert-btn" class="btn btn-secondary my-3">Convert</button>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colspan="2" class="text-center">
+                      <div class="loader"></div>
+                      <div>
+                        <p class="lead fs-5 fw-bold" id="result"></p>
+                        <p class="lead fs-5 fw-bold" id="exchange-rate"></hp>
+                      </div>
+                    </th>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="airModal" class="modal fade" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="airModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="2">
+                      <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="modal"
+                        aria-label="Close"> </button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <h4 class="modal-title mr-5" id="country">Air Pollution</h4>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-primary">
+                    <th scope="row">Carbon Monoxide</th>
+                    <td id="co" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Nitrogen Dioxide</th>
+                    <td id="no2" class="text-end"></td>
+                  </tr>
+                  <tr class="table-primary">
+                    <th scope="row">Sulphur dioxide</th>
+                    <td id="so2" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Particulates2.5</th>
+                    <td id="pm2_5" class="text-end"></td>
+                  </tr>
+                  <tr class="table-primary">
+                    <th scope="row">Particulates10</th>
+                    <td id="pm10" class="text-end"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div id="covidModal" class="modal fade" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="covidModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="2">
+                      <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="modal"
+                        aria-label="Close"> </button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <h4 class="modal-title" id="country">Covid Statistics</h4>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-danger">
+                    <th scope="row">Total</th>
+                    <td id="total" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Active</th>
+                    <td id="active" class="text-end"></td>
+                  </tr>
+                  <tr class="table-danger">
+                    <th scope="row">Recovered</th>
+                    <td id="recovered" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Deaths</th>
+                    <td id="deaths" class="text-end"></td>
+                  </tr>
+                  <tr class="table-danger">
+                    <th scope="row">Tests Taken</th>
+                    <td id="tests" class="text-end"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <div id="populationModal" class="modal fade" data-bs-backdrop="false" data-bs-keyboard="false"
+          aria-labelledby="populationModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="text-center" colspan="2">
+                      <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="modal"
+                        aria-label="Close"> </button>
+                      <div class="d-flex align-items-center justify-content-center">
+                        <h4 class="modal-title" id="country">The Population</h4>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="table-info">
+                    <th scope="row">Fertility Rate</th>
+                    <td id="fertility" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Internet Users</th>
+                    <td id="internet_users" class="text-end"></td>
+                  </tr>
+                  <tr class="table-info">
+                    <th scope="row">Life Expectancy Female</th>
+                    <td id="life_expectancy_female" class="text-end"></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Life Expectancy Male</th>
+                    <td id="life_expectancy_male" class="text-end"></td>
+                  </tr>
+                  <tr class="table-info">
+                    <th scope="row">Unemployment Rate</th>
+                    <td id="unemployment" class="text-end"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <div id="preloader"></div>
+
+  <script src="bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="leaflet/leaflet.js"></script>
+  <script src="leaflet\Leaflet.markercluster-1.4.1\dist\leaflet.markercluster-src.js"></script>
+  <script src="leaflet\Leaflet.markercluster-1.4.1\src\MarkerCluster.js"></script>
+  <script src="leaflet\Leaflet.markercluster-1.4.1\src\MarkerClusterGroup.js"></script>
+  <script src="leaflet\Leaflet.markercluster-1.4.1\src\DistanceGrid.js"></script>
+  <script src="leaflet\Leaflet.markercluster-1.4.1\src\index.js" type="module"></script>
+  <script src="leaflet/dist/js/leaflet.extra-markers.min.js"></script>
+
+  <script type="module" src="libs/js/script.js"></script>
+
+</body>
+
+</html>

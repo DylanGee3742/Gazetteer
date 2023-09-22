@@ -1,0 +1,362 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#preloader:before {
+  content: "";
+  position: fixed;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  border: 6px solid #f2f2f2;
+  border-top: 6px solid #56829e ;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: animate-preloader 1s linear infinite;
+  animation: animate-preloader 1s linear infinite;
+}
+
+@-webkit-keyframes animate-preloader {
+  0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+  }100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+  }
+}
+
+@keyframes animate-preloader {
+  0% {-webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+  }100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+  }
+}
+
+
+.cluster-icon div {
+  position: relative;
+}
+
+
+.cluster-icon span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: bold;
+  color: black;
+  text-shadow: 1px 1px #333;
+}
+
+#webcam-iframe-live {
+  z-index: 1000;
+}
+
+#webcam-iframe {
+  z-index: 1000;
+}
+
+#map {
+  position: absolute;
+  height: calc(100vh-48px); 
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.search {
+  position: absolute;
+  top: 10px;
+  z-index: 999;
+  left: 50%;
+  transform: translateX(-45%);
+}
+
+.loader {
+  display: none;
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: 20px auto;
+}
+
+.central-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: none;
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#pre-load {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  overflow: hidden;
+  background: #fff;
+}
+
+#pre-load:before {
+    content: "";
+    position: fixed;
+    top: calc(50% - 30px);
+    left: calc(50% - 30px);
+    border: 6px solid #f2f2f2;
+    border-top: 6px solid #56829e ;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    -webkit-animation: animate-preloader 1s linear infinite;
+    animation: animate-preloader 1s linear infinite;
+}
+
+@-webkit-keyframes animate-preloader {
+    0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    }
+    }
+    @keyframes animate-preloader {
+    0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+    }
+}
+
+.modal-body {
+  overflow: hidden;
+  min-height: 350px;
+}
+
+.modal-content {
+  max-height: calc(100vh-200px);
+}
+
+.fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
+
+
+.footer {
+  position: fixed;
+  bottom: 0;
+}
+
+
+
+#general-info-btn {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  top: 85px;
+  left: 0.5%;
+  border-radius: 50%;
+  background-image: url(../pics/information.png);
+  background-size: cover;
+  background-color: white;
+}
+
+
+#weather-info-btn {
+  display: flex;
+  position: absolute;
+  z-index: 1000;
+  top: 140px;
+  left: 0.5%;
+  border-radius: 50%;
+  background-image: url(../pics/weather.png);
+  background-size: cover;
+  background-color: white;
+}
+
+
+
+#exchange-info-btn {
+  display: flex;
+  position: absolute;
+  top: 195px;
+  left: 0.5%;
+  z-index: 1000;
+  border-radius: 50%;
+  background-image: url(../pics/exchange.png);
+  background-size: cover;
+  background-color: white;
+}
+
+#exchange-info {
+  display: none;
+  position: absolute;
+  top: 7.5%;
+  right: 50%;
+  z-index: 1000;
+  background: white;
+  text-align: center;
+  border-radius: 10px
+}
+
+#air-info-btn {
+  display: flex;
+  position: absolute;
+  top: 250px;
+  left: 0.5%;
+  z-index: 1000;
+  border-radius: 50%;
+  background-image: url(../pics/air.png);
+  background-size: cover;
+  background-color: white;
+}
+
+#covid-info-btn {
+  display: flex;
+  position: absolute;
+  top: 305px;
+  left: 0.5%;
+  z-index: 1000;
+  border-radius: 50%;
+  background-image: url(../pics/covid.png);
+  background-size: cover;
+  background-color: white;
+}
+
+
+#population-info-btn {
+  display: flex;
+  position: absolute;
+  top: 360px;
+  left: 0.5%;
+  z-index: 1000;
+  border-radius: 50%;
+  background-image: url(../pics/population.png);
+  background-size: cover;
+  background-color: white;
+}
+
+
+
+@media (min-width: 768px) {
+
+  #general-info-btn {
+    height: 50px;
+    width: 50px;
+  }
+
+
+  #weather-info-btn {
+    height: 50px;
+    width: 50px;
+  }
+
+
+  #exchange-info-btn {
+    height: 50px;
+    width: 50px;
+
+  }
+
+  #air-info-btn {
+    height: 50px;
+    width: 50px;
+  }
+
+
+  #covid-info-btn {
+    height: 50px;
+    width: 50px;
+  }
+
+  #population-info-btn {
+    height: 50px;
+    width: 50px;
+  }
+}
+
+
+@media (max-width: 767px) {
+  #general-info-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+  #weather-info-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+  #exchange-info-btn {
+    height: 40px;
+    width: 40px;
+
+  }
+
+  #air-info-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+  #covid-info-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+  #population-info-btn {
+    height: 40px;
+    width: 40px;
+  }
+
+
+}
